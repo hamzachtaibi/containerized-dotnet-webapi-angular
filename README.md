@@ -60,3 +60,11 @@ this credentials are defined in the docker-compose.yml file.
 
 Note :
 The chosen port in the docker-compose.yml file may not be available on your machin, and cause of that docker may choose a different port to access the application.
+
+# Videos:
+
+Source code :
+[https://youtu.be/BYGDoWdBmlo](url)
+
+Building images and discovering the web application:
+[https://youtu.be/yJZdmRSgaZI](url)
