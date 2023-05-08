@@ -1,0 +1,57 @@
+
+version: '3.4'
+
+networks:
+  charity_net:
+
+volumes:
+  v_sqlserver:
+  
+
+services:
+  s_sqlserver:
+    container_name: c_db_server
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Sqlserver@2019
+    networks:
+      - charity_net
+    ports:
+        - 8001:1433
+    volumes:
+      - v_sqlserver:/var/opt/mssql 
+    restart: always
+        
+  s_webapi:
+    container_name: c_webapi
+    depends_on:
+      - s_sqlserver
+    image: docker.io/hamzachtaibi/charity-api:5.0
+    build:
+      context: .
+      dockerfile: webApi/Dockerfile
+    networks:
+      - charity_net
+    ports:
+      - 64894:80
+      - 64895:443
+    environment:
+      - DB_HOST_NAME=s_sqlserver
+      - DB_Name=DbUnitedSociety
+      - DB_MSSQL_SA_PASSWORD=Sqlserver@2019
+      - SUPER_ADMIN_KEY=HG63728GDHW 
+      - SUPER_ADMIN_USERNAME=hamza@admin.com
+
+  s_webapp:
+    container_name: c_webapp
+    depends_on:
+      - s_webapi
+    image: docker.io/hamzachtaibi/charity-web:5.0
+    build:
+      context: .
+      dockerfile: webApp/Dockerfile
+    networks:
+      - charity_net
+    ports:
+      - 4200:80

@@ -1,0 +1,33 @@
+
+<div *ngIf="!isSuperAdminExist" class = "container">
+	<div class="wrapper">
+		<form [formGroup]="superAdminForm" (ngSubmit)="onActivate()" class="form-signin">       
+		    <h3 class="form-signin-heading">Activer le compte super administrateur</h3>
+			  <hr class="colorgraph"><br>
+			  
+			  <input type="email" formControlName="email" class="form-control" name="Username" placeholder="SUPER_ADMIN_USERNAME" required="" autofocus="" />
+			  <input type="password" formControlName="superAdminKey" class="form-control" name="superAdminKey" placeholder="SUPER_ADMIN_KEY " required=""/>     
+			  <input type="password" formControlName="password" class="form-control" name="Password" placeholder="Password" required=""/>
+
+
+              <!--Validation Email-->
+              <small class="text-danger" *ngIf="superAdminForm.get('email')?.dirty && superAdminForm.get('email')?.errors?.['required']">* Adresse e-mail est nécessaire.<br></small>
+              <small class="text-danger" *ngIf="superAdminForm.get('email')?.errors?.['isValidEmail'] && superAdminForm.get('email')?.value?.length >0 ">* Pas un e-mail valide.<br></small>
+              <!--Validation Key-->
+              <small class="text-danger" *ngIf="superAdminForm.get('superAdminKey')?.dirty && superAdminForm.get('superAdminKey')?.errors?.['required']">* Veuillez fournir votre clé secrète.<br></small>
+              <!--Validation Password-->
+              <small class="text-danger" *ngIf="superAdminForm.get('password')?.dirty && superAdminForm.get('password')?.errors?.['required']">* Mot de passe requis.<br></small>
+              <small class="text-danger" *ngIf="superAdminForm.get('password')?.errors?.['isValidPasssword']">
+                * Le mot de passe doit comporter plus de 9 caractères, et contenir au moins :<br>
+                - un caractère majuscule. [A - Z].<br>
+                - un caractère minuscule [a - b].<br>
+                - un caractère spécial : @, #<br>
+                - un numéro.<br></small>
+                                  
+			 <div>
+                <button class="btn btn-lg btn-primary btn-block" >Activer</button> 
+             </div>
+			   			
+		</form>			
+	</div>
+</div>

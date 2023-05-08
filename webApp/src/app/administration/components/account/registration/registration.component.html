@@ -1,0 +1,46 @@
+<div class="container d-flex justify-content-center">
+    <div class="card mx-5 my-5">
+        <div class="card-body py-2 px-2">
+            <h2 class="card-heading py-3 px-5">Enregistrer votre compte</h2>
+            <form [formGroup]="registrationForm" (ngSubmit)="onRegister()">
+                <div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 col-lg-6 mb-3">
+                            <input type="email" formControlName="email" class="form-control" placeholder="example@mail.com">
+                            <!--Validation Message-->
+                            <small class="text-danger" *ngIf="registrationForm.get('email')?.dirty && registrationForm.get('email')?.errors?.['required']">* Adresse e-mail est nécessaire</small>
+                            <small class="text-danger" *ngIf="registrationForm.get('email')?.errors?.['isValidEmail'] && registrationForm.get('email')?.value?.length >0 ">* Pas un e-mail valide</small>
+                        
+                        </div>
+                        <div class="col-md-6 col-lg-6 mb-3">
+                            <input type="password" formControlName="password" class="form-control" placeholder="*********">
+                            <!--Validation Message-->
+                            <small class="text-danger" *ngIf="registrationForm.get('password')?.dirty && registrationForm.get('password')?.errors?.['required']">* Mot de passe requis</small>
+                                              
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-4 d-flex justify-content-center">
+                    <div class="text-center ">
+                        <small>Entrez votre numéro d'identité</small>
+                        <div class="inputs d-flex flex-row justify-content-center mt-2">
+                            <input type="text" formControlName="validationCode" class="form-control m-2 text-center" placeholder="CIN number" />
+                            <!--Validation Message-->
+                            <small class="text-danger" *ngIf="registrationForm.get('validationCode')?.dirty && registrationForm.get('validationCode')?.errors?.['required']">* Numéro de code est requis</small>
+                             
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-primary btn-sm text-white px-4">Créer</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <div>
+                <div>
+                    <small><a routerLink="/login">déjà enregistré ? Login</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="pagetitle">
+    <h1>Liste des individus</h1>
+</div><!-- End Page Title -->
+
+<section class="section dashboard">
+    <div class="row">
+
+        <div class="col">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card recent-sales overflow-auto" style="min-height: 300px;">
+
+
+                        <div class="card-body">
+                            <div class="d-flex justify-content-end mt-2 mb-3">
+                                <a class="btn btn-success btn-sm" routerLink="/dashboard/profile/add"><i
+                                        class="bi bi-person-plus"></i> Ajouter</a>
+                            </div>
+                            <div class="btn-toolbar mb-3" role="toolbar">
+                                <button type="button" id="remove" (click)="deleteSelectedRows()"
+                                    class="btn btn-outline-danger btn-sm m-2" [disabled]="selectedRows.length === 0"><i
+                                        class="bi bi-trash"></i> Selected</button>
+                                <button type="button" class="btn btn-warning btn-sm m-2" (click)="refreshTable()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+                                        <path
+                                            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z">
+                                        </path>
+                                    </svg> Actualiser
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="profilesList" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-hover table-sm">
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

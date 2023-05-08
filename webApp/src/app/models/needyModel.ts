@@ -1,0 +1,47 @@
+export interface Needy{
+    id?:string; 
+    cin?:string;
+    fullName?:string;
+    birthDate?:Date |null;
+    gender?:string;
+    birthPlace?:string;
+    academicLevel?:string;
+    email?:string;
+    phoneNumber?:string;
+    maritalStatus?:string;
+    profession?:string;
+    address?:string;
+    country?:string;
+    city?:string;
+    postalCode?:string;
+    gps?:string;
+    dreamOf?:string;
+    familyRecordNumber?:string;
+    fatherId?:string;
+    motherId?:string;
+    grandFatherId?:string;
+    grandMotherId?:string;
+    mariedToId?:string | null;
+    imageProfile?:string | null;
+    imageBlurry?:string | null;
+    note?:string;
+    fullNameArabic?:string;
+    birthPlaceArabic?:string;
+    academicLevelArabic?:string;
+    addressArabic?:string;
+    countryArabic?:string;
+    cityArabic?:string;
+    professionArabic?:string;
+    dreamOfArabic?:string;
+    familyRecordNumberArabic?:string;
+    registrationDate?:Date;
+    profileUpdateTime?:Date;
+    noteArabic?:string;
+    facebookAccount?:string;
+    tweeterAccount?:string;
+    instagramAccount?:string;
+    linkedInAccount?:string;
+    isNeedy:true;
+    isActive?:boolean;
+    [key: string]: any; // add index signature, will allow to access any property of Needy using a string key, even if that property is not explicitly defined in the interface.
+}

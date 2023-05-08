@@ -1,0 +1,231 @@
+<!-- Page Title -->
+<div class="pagetitle">
+    <h1>{{title}}</h1>
+</div><!-- End Page Title -->
+
+<app-not-found *ngIf="showNotFound" [title]="bigTitle" [indication]="indications" [showButton]="showButton"></app-not-found>
+
+<section *ngIf="!showNotFound" class="section profile">
+    <div class="row">
+        <!-- Left Section -->
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="{{memberProfileData.imageProfile}}" alt="" class="rounded-circle">
+                    <h2>{{memberProfileData.fullName}}</h2>
+                    <h3>{{memberProfileData.profession}}</h3>
+                    <div class="social-links mt-2">
+                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Section -->
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <!-- Tab Overview -->
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Vue
+                                générale</button>
+                        </li>
+                        <!-- Tab Edit Profile -->
+                        <li *ngIf="!(payLoadToken.role != 'superAdmin' && memberProfileData.role == 'superAdmin')"  class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editer le
+                                profil</button>
+                        </li>
+                        <!-- Tab Setting  -->
+                        <li *ngIf="memberProfileData.role != 'superAdmin'" class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Réglages</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+                        <!-- Content Overview -->
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                            <h5 class="card-title">Détails du profil</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Nom et prénom</div>
+                                <div class="col-lg-9 col-md-8">{{memberProfileData.fullName}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Profession</div>
+                                <div class="col-lg-9 col-md-8">{{memberProfileData.profession}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">E-mail</div>
+                                <div class="col-lg-9 col-md-8">{{memberProfileData.email}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Téléphone</div>
+                                <div class="col-lg-9 col-md-8">{{memberProfileData.phoneNumber}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Adresse</div>
+                                <div class="col-lg-9 col-md-8">{{memberProfileData.address}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">CIN</div>
+                                <div class="col-lg-9 col-md-8">{{memberProfileData.cin}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Date de naissance</div>
+                                <div class="col-lg-9 col-md-8">{{birthDate}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Dernières mises à jour</div>
+                                <div class="col-lg-9 col-md-8">{{profileUpdateTime}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">profil créé :</div>
+                                <div class="col-lg-9 col-md-8">{{registrationDate}}</div>
+                            </div>
+
+
+                        </div>
+
+                        <div *ngIf="!(payLoadToken.role != 'superAdmin' && memberProfileData.role == 'superAdmin')" class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            <app-add-member [isChild]="true" [isActive]="memberProfileData.isActive!" [userProfileId] = "memberProfileData.id!"></app-add-member>
+                            <!-- End Profile Edit Form -->
+
+                        </div>
+
+                        <div *ngIf="memberProfileData.role != 'superAdmin'" class="tab-pane fade pt-3" id="profile-settings">
+
+                            <!-- Settings Form -->
+                            <form [formGroup]="settingsForm" (ngSubmit)="onChangeSetting()">
+                                <!-- Donner l'autorisation de-->
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Permissiones</label>
+                                    <div class="col-md-8 col-lg-9 mt-2">
+                                        <div class="col-md-6">
+                                            <label for="role">Rôle de membre (<small class="text-danger">Attention! Choisir soigneusement.</small>)</label>
+                                            
+                                            <select id="role" class="form-select form-select-sm mb-2" formControlName="role">
+                                                <option selected>--Sélectionnez un rôle--</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="editor">Editeur/Editrice</option>
+                                                <option value="member">Membre</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toAddNewNeedy" [disabled]="true" >
+                                            <label class="form-check-label" for="toAddNewNeedy">
+                                                Ajouter un individu
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toCreateProject">
+                                            <label class="form-check-label" for="toCreateProject">
+                                                Créer un projet
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toCreateCategory">
+                                            <label class="form-check-label" for="toCreateCategory">
+                                                Créer une catégorie
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toEditPayment ">
+                                            <label class="form-check-label" for="toEditPayment">
+                                                Modifier un paiement
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toAddNewMember">
+                                            <label class="form-check-label" for="toAddNewMember">
+                                                Ajouter un employé
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toEditMember">
+                                            <label class="form-check-label" for="toEditMember">
+                                                Modifier un employé
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toUnlockAccount">
+                                            <label class="form-check-label" for="toUnlockAccount">
+                                                Débloquer un compte
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                id="toAllowMemberAsUser" data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Attention! vous donnerez à cet utilisateur la permission de donner accès à un autre employé en créant un compte d'administration.">
+                                            <label class="form-check-label" for="toAllowMemberAsUser"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Attention! vous donnerez à cet utilisateur la permission de donner accès à un autre employé en créant un compte d'administration.">
+                                                Autoriser un nouveau compte.
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form><!-- End settings Form -->
+
+                            <hr />
+
+                            <!-- Manage account -->
+                            <div *ngIf="payLoadToken.profileId != memberProfileData.id" class="row mb-3">
+                                <div class="col-md-8 col-lg-9 mt-2">
+                                    <div class="d-sm-flex align-items-center pt-3" id="deactivate">
+                                        <div>
+                                            <b>Désactiver/Activer le compte</b>
+                                            <p *ngIf="!memberProfileData.isActive" style="color:firebrick">Attention ! l'activation de ce profil permettra au membre de créer un compte</p>
+                                            <p *ngIf="memberProfileData.isActive" style="color:firebrick">Attention ! si vous désactivez ce profil, le membre ne pourra pas se connecter à son compte.</p>
+                                        </div>
+                                        <div class="m-4">
+                                            <button class="{{memberProfileData.isActive? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'}}" (click)="UpdateStatus()">
+                                                {{memberProfileData.isActive? 'Désactiver' : 'Activer'}}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-sm-flex align-items-center pt-3" id="deactivate">
+                                        <div *ngIf="memberProfileData.role!='member' && !memberProfileData.isActive">
+                                            <b>Supprimer le compte</b>
+                                            <p *ngIf="memberProfileData.isActive">Pour supprimer ce membre, le compte associé à ce profil doit être inactif.</p>
+                                            <p *ngIf="memberProfileData.role!='member' && !memberProfileData.isActive" style="color:firebrick">Attention ! cette action est irréversible</p>
+                                        </div>
+                                        <div *ngIf="memberProfileData.role!='member' &&  !memberProfileData.isActive" class="m-4">
+                                            <button class="btn btn-outline-danger btn-sm" (click)="DeleteUserAccount()">Supprimer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

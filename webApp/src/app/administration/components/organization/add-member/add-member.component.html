@@ -1,0 +1,233 @@
+
+<div class="pagetitle">
+    <h1>{{title}}</h1>
+</div><!-- End Page Title -->
+
+<app-not-found *ngIf="showNotFound" [title]="bigTitle" [indication]="indications" [showButton]="showButton"></app-not-found>
+
+<div *ngIf="!showNotFound">
+    <!-- Profile Add/Edit Form -->
+    <form class="needs-validation" [formGroup]="profileForm" (ngSubmit)="UpsertData()" enctype="multipart/form-data">
+        <!-- Watchers -->
+        <div>
+
+            <input type="text" class="form-control" readonly hidden>
+            <input type="text" formControlName="imageProfile" #RefimageProfileMainWatcher class="form-control" readonly
+                hidden>
+        </div>
+
+        <!--Profile Image-->
+        <div class="row mb-3 px-2">
+            <div class="card">
+                <div class="col mx-auto card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <!-- Image Preview area-->
+                    <div class="image-area position-relative">
+                        <img id="imagePreviewMain" #RefpreviewImageMain src="../../../../../assets/img/profileUserIcon.png" alt=""
+                        class="img-fluid rounded shadow-sm mx-auto d-block rounded-circle">
+                    </div>
+                    <!-- Upload image input + Button-->
+                    <div class="mt-1 rounded-pill shadow-sm align-middle">
+                        <input id="imageUploaderMain" #RefimageUploaderMain type="file" accept="image/*"
+                            (change)="PreviewUploadedImage($event, 'mainImage')" class="form-control border-0"
+                            style="display:none">
+                        <label id="btnUpload1" for="imageUploaderMain" class="btn btn-success m-0 rounded-pill px-4 text-white">
+                            <i class="bi bi-upload mr-2" style="font-size: 15px;"></i>&nbsp;
+                            <small #RefbtnUploadMain class="text-uppercase">Choisir</small>
+                        </label>
+                        
+                        <label *ngIf="showBtnDeleteImgMain" id="removeImage1" (click)="RemoveUploadedImage('mainImage')"
+                            class="btn m-0 rounded-pill px-4 text-danger">
+                            <i class="bi bi-x-circle-fill fa-2x"></i> Supprimer
+                        </label>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Person data -->
+        <div class="card profileFormValidator" >
+            <div class="card-body pt-3">
+                <div class="tab-content pt-2">
+                    <div class="profile-edit pt-3" id="profile-edit">
+
+
+                        <!-- Personal information -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Informations personnels</legend>
+                            
+                            <div class="row mb-3">
+                                <!--Full name -->
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="fullName" class="form-control"
+                                        placeholder="Nom et prénom">
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('fullName')?.errors?.['required']">le nom complet est
+                                        requis</small>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="email" formControlName="email" class="form-control" placeholder="E-mail">
+                                    <small class="text-danger"
+                                            *ngIf="profileForm.get('email')?.errors?.['required']">l'adresse mail est obligatoire</small>
+                                    
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('email')?.errors?.['isValidEmail'] && profileForm.get('email')?.value?.length >0 ">adresses
+                                        e-mail invalides</small>
+                                </div>
+                            </div>
+
+                            <!--Phone number-->
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="phoneNumber" class="form-control"
+                                        placeholder="Téléphone: +212xxxxxxxxx">
+                                    <div>
+                                        <small class="text-danger"
+                                            *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Le numéro de
+                                            téléphone est obligatoire</small>
+                                        <small class="text-danger"
+                                            *ngIf="profileForm.get('phoneNumber')?.errors?.['isValidPhone'] && profileForm.get('phoneNumber')?.value?.length >0 ">format invalide</small>
+                                    </div>
+                                </div>
+
+                                <!-- CIN Number-->
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="cin" class="form-control"
+                                        placeholder="Numéro d'identification : CIN">
+                                    <small class="text-danger" *ngIf="profileForm.get('cin')?.errors?.['required']">le numéro d'identité est obligatoire</small>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <!-- Date of birth-->
+                                <div class="col-md-6 col-lg-6 mb-3">
+
+                                    <label class="labels" for="birthday">Date de naissance</label>
+                                    <input type="date" formControlName="birthDate" class="form-control" id="birthday">
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('birthDate')?.errors?.['required']">Date de naissance est
+                                        obligatoire</small>
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('birthDate')?.errors?.['maxDateValidator']">veuillez
+                                        choisir une date avant aujourd'hui.</small>
+                                </div>
+
+                                <!--BirthPalce-->
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <label></label>
+                                    <input type="text" formControlName="birthPlace" class="form-control" placeholder="Lieu de naissance">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <!-- Gender -->
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <label>Le sexe <span class="text-danger"
+                                            *ngIf="profileForm.get('gender')?.errors?.['required']">(veuillez choisir le
+                                            sexe)</span></label>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0"></legend>
+                                        <div class="col-sm-10">
+                                            <div>
+                                                <input type="radio" formControlName="gender" id="male"
+                                                    class="form-check-input" value="M">
+                                                <label for="male" class="form-check-label">&nbsp; Mâle</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" formControlName="gender" id="female"
+                                                    class="form-check-input" value="F">
+                                                <label for="female" class="form-check-label">&nbsp; Femelle </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Address information -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Addresse</legend>
+
+                            <div class="row mb-3">
+                                <div class="col mb-3">
+                                    <input type="text" formControlName="address" class="form-control"
+                                        placeholder="Adresse">
+                                </div>
+                            </div>
+                            <!-- Country -->
+                            <div class="row mb-3">
+
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <!-- Country name -->
+                                    <input type="text" formControlName="country" class="form-control"
+                                        placeholder="Pays de résidence">
+                                </div>
+                                
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="city" class="form-control" placeholder="ville">
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="postalCode" class="form-control"
+                                        placeholder="Code postal">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="gps" class="form-control"
+                                        placeholder="Coordonnées GPS">
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <!--  Éducation / Métier -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Éducation / Métier</legend>
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="academicLevel" class="form-control"
+                                        placeholder="Niveau d'éducation">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="profession" class="form-control"
+                                        placeholder="Profession">
+                                </div>
+                            </div>
+
+                            
+
+                        </fieldset>
+                        <!-- Notes -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Description</legend>
+                            <div class="row">
+                                <div class="mb-3">
+                                    <div class="col-md-8 col-lg-9">
+                                        <textarea formControlName="note" class="form-control"
+                                            placeholder="Écrivez des notes ici..." style="height: 200px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <div class="text-center">
+                            <button class="btn btn-warning">{{textBtn}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div *ngIf="!isChild"><button onclick="history.back()" class="btn btn-outline"><i class="bi bi-arrow-bar-left"></i>Retour</button>
+    </div>
+    <!-- End Profile Edit Form -->
+
+</div>
+
+
+<script src="../assets/vendor/webnetart/wna.js"></script>

@@ -1,0 +1,68 @@
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+      
+      <li class="nav-heading">Administration</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Profil</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a routerLink="profileList">
+              <i class="bi bi-circle"></i><span>Tous les profils</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="profile/add">
+              <i class="bi bi-circle"></i><span>Ajouter un nouveau membre</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Profile Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#organization-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Organisation</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="organization-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a routerLink="members">
+              <i class="bi bi-circle"></i><span>Membres</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="member/add">
+              <i class="bi bi-circle"></i><span>Ajouter un nouveau membre</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End organization Nav -->
+
+      <li class="nav-item ">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse">
+          <i class="bi bi-gear"></i><span>Compte</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a routerLink="myProfile">
+              <i class="bi bi-circle"></i><span>Mon profil</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End User Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" routerLink="help">
+          <i class="bi bi-question-circle"></i>
+          <span>Q.F.P</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+    </ul>
+
+  </aside>
+  
+  <!-- End Sidebar-->

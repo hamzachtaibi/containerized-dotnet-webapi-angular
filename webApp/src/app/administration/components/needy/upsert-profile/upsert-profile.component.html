@@ -1,0 +1,388 @@
+
+<div class="pagetitle">
+    <h1>{{title}}</h1>
+</div><!-- End Page Title -->
+
+<app-not-found *ngIf="showNotFound" [title]="bigTitle" [indication]="indications" [showButton]="showButton"></app-not-found>
+
+<div *ngIf="!showNotFound">
+    <!-- Profile Add/Edit Form -->
+    <form class="needs-validation" [formGroup]="profileForm" (ngSubmit)="UpsertData()" enctype="multipart/form-data">
+        <!-- Watchers -->
+        <div>
+
+            <input type="text" class="form-control" readonly hidden>
+            <input type="text" formControlName="imageProfile" #RefimageProfileMainWatcher class="form-control" readonly
+                hidden>
+            <input type="text" formControlName="imageBlurry" #RefimageProfileAnonyWatcher class="form-control" readonly
+                hidden>
+            <input id="" asp-for="objPerson.RegistrationDate" type="text" class="form-control" readonly hidden>
+        </div>
+
+        <!--Profile Image-->
+        <div class="card">
+            <div class="row mb-3 px-2">
+                <div class="col-md-6 col-lg-6 mb-3">
+                    <div class="col mx-auto">
+                        <!-- Image Preview area-->
+                        <div class="image-area">
+                            <label *ngIf="showBtnDeleteImgMain" id="removeImage1"
+                                (click)="RemoveUploadedImage('mainImage')"
+                                class="m-0 rounded-0 px-4 text-danger position-absolute top-0 end-0">
+                                <i class="bi bi-x-circle-fill fa-2x"></i>
+                            </label>
+                            <img id="imagePreviewMain" #RefpreviewImageMain src="" alt=""
+                                class="img-fluid rounded shadow-sm mx-auto d-block">
+                        </div>
+                        <!-- Upload image input + Button-->
+                        <div class="input-group rounded-pill bg-warning-light shadow-sm align-middle">
+                            <input id="imageUploaderMain" #RefimageUploaderMain type="file" accept="image/*"
+                                (change)="PreviewUploadedImage($event, 'mainImage')" class="form-control border-0"
+                                style="display:none">
+                            <label id="btnUpload1" for="imageUploaderMain" class="btn btn-light m-0 rounded-pill px-4">
+                                <i class="bi bi-upload mr-2" style="font-size: 15px; color: rgb(28, 7, 220);"></i>&nbsp;
+                                <small #RefbtnUploadMain
+                                    class="text-uppercase font-weight-bold text-muted">Choisir</small>
+                            </label>
+                            <label id="RefimageLabelNameMain" #RefimageLabelNameMain
+                                class="font-weight-light text-muted my-auto px-2"> Photo de profil</label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 mb-3">
+                    <div class="col mx-auto">
+                        <!-- Image Preview area-->
+                        <div class="image-area">
+                            <label *ngIf="showBtnDeleteImgAnony" id="removeImage2"
+                                (click)="RemoveUploadedImage('anonyImage')"
+                                class="m-0 rounded-0 px-4 text-danger position-absolute top-0 end-0">
+                                <i class="bi bi-x-circle-fill fa-2x"></i>
+                            </label>
+                            <img id="imagePreview2" #RefImagePreviewAnony src="" alt=""
+                                class="img-fluid rounded shadow-sm mx-auto d-block">
+                        </div>
+                        <!-- Upload image input + Button-->
+                        <div class="input-group rounded-pill bg-warning-light shadow-sm align-middle">
+                            <input id="imageUploaderAnony" #RefimageUploaderAnony type="file" accept="image/*"
+                                (change)="PreviewUploadedImage($event, 'anonyImage')" style="display:none">
+                            <label id="btnUpload2" for="imageUploaderAnony" class="btn btn-light m-0 rounded-pill px-4">
+                                <i class="bi bi-upload mr-2" style="font-size: 15px; color: rgb(28, 7, 220);"></i>&nbsp;
+                                <small #RefbtnUploadAnony
+                                    class="text-uppercase font-weight-bold text-muted">Choisir</small>
+                            </label>
+                            <label id="imageLabelName2" #RefImageLabelNameAnony
+                                class="font-weight-light text-muted my-auto px-2"> Image inconnue</label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Person data -->
+        <div class="card profileFormValidator">
+            <div class="card-body pt-3">
+                <div class="tab-content pt-2">
+                    <div class="profile-edit pt-3" id="profile-edit">
+
+
+                        <!-- Personal information -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Informations personnels</legend>
+                            <!--Full name -->
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="fullName" class="form-control"
+                                        placeholder="Nom et prénom">
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('fullName')?.errors?.['required']">le nom complet est
+                                        requis</small>
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="fullNameArabic"
+                                        class="form-control arabic-input" placeholder="الاسم الكامل">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="phoneNumber" class="form-control"
+                                        placeholder="Téléphone: +212xxxxxxxxx">
+                                    <div>
+                                        <small class="text-danger"
+                                            *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Le numéro de
+                                            téléphone est obligatoire</small>
+                                        <small class="text-danger"
+                                            *ngIf="profileForm.get('phoneNumber')?.errors?.['isValidPhone'] && profileForm.get('phoneNumber')?.value?.length >0 ">invalid
+                                            Format</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="cin" class="form-control"
+                                        placeholder="Numéro d'identification : CIN">
+                                    <small class="text-muted">s'il n'est pas fourni, le système en générera un pour une
+                                        utilisation temporaire</small>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="email" formControlName="email" class="form-control"
+                                        placeholder="E-mail">
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('email')?.errors?.['isValidEmail'] && profileForm.get('email')?.value?.length >0 ">adresses
+                                        e-mail invalides</small>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <!-- Date of birth-->
+                                <div class="col-md-6 col-lg-6 mb-3">
+
+                                    <label class="labels" for="birthday">Date de naissance</label>
+                                    <input type="date" formControlName="birthDate" class="form-control" id="birthday">
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('birthDate')?.errors?.['required']">Date de naissance est
+                                        obligatoire</small>
+                                    <small class="text-danger"
+                                        *ngIf="profileForm.get('birthDate')?.errors?.['maxDateValidator']">veuillez
+                                        choisir une date avant aujourd'hui.</small>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <label>Le sexe <span class="text-danger"
+                                            *ngIf="profileForm.get('gender')?.errors?.['required']">(veuillez choisir le
+                                            sexe)</span></label>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0"></legend>
+                                        <div class="col-sm-10">
+                                            <div>
+                                                <input type="radio" formControlName="gender" id="male"
+                                                    class="form-check-input" value="M">
+                                                <label for="male" class="form-check-label">&nbsp; Mâle</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" formControlName="gender" id="female"
+                                                    class="form-check-input" value="F">
+                                                <label for="female" class="form-check-label">&nbsp; Femelle </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="birthPlace" class="form-control"
+                                        placeholder="Lieu de naissance">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="birthPlaceArabic"
+                                        class="form-control arabic-input" placeholder="مكان الولادة">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Address information -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Addresse</legend>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="address" class="form-control"
+                                        placeholder="Adresse">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="addressArabic" class="form-control arabic-input"
+                                        placeholder="العنوان">
+                                </div>
+                            </div>
+                            <!-- Country -->
+                            <div class="row mb-3">
+
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <!-- Country name -->
+                                    <input type="text" formControlName="country" class="form-control"
+                                        placeholder="Pays de résidence">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <!-- Country name in arabic -->
+                                    <div class="arabic-input">
+                                        <input type="text" formControlName="countryArabic" class="form-control"
+                                            placeholder="بلد الإقامة">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="city" class="form-control" placeholder="ville">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="cityArabic" class="form-control arabic-input"
+                                        placeholder="المدينة">
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="postalCode" class="form-control"
+                                        placeholder="Code postal">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="gps" class="form-control"
+                                        placeholder="Coordonnées GPS">
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <!--  Éducation / Métier -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Éducation / Métier</legend>
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="academicLevel" class="form-control"
+                                        placeholder="Niveau d'éducation">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="academicLevelArabic"
+                                        class="form-control arabic-input" placeholder="المستوى التعليمي">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="profession" class="form-control"
+                                        placeholder="Profession">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="professionArabic"
+                                        class="form-control arabic-input" placeholder="المهنة">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="dreamOf" class="form-control"
+                                        placeholder="le rêve">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="dreamOfArabic" class="form-control arabic-input"
+                                        placeholder="الحلم">
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <!--  État civil -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">État civil</legend>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="familyRecordNumber" class="form-control"
+                                        placeholder="Numéro de livret de famille">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3" dir="rtl">
+                                    <input type="text" formControlName="familyRecordNumberArabic"
+                                        class="form-control arabic-input" placeholder="رقم سجل الأسرة">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <label>État civil <small class="text-danger"
+                                            *ngIf="profileForm.get('maritalStatus')?.errors?.['required']">(veuillez
+                                            choisir l'état civil)</small></label>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0"></legend>
+                                        <div>
+                                            <div *ngFor="let status of maritalStatus">
+                                                <input type="radio" formControlName="maritalStatus"
+                                                    class="form-check-input" id="{{status}}" value="{{status}}">
+                                                <label class="form-check-label" for="{{status}}">&nbsp;
+                                                    {{status}}</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3"
+                                    *ngIf="profileForm.controls['maritalStatus'].value === 'Marié(e)'">
+                                    <input type="text" formControlName="mariedToId" class="form-control" id="marriedTo"
+                                        placeholder="identité du partenaire">
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <!--  La famille -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">La famille</legend>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="fatherId" class="form-control"
+                                        placeholder="Numéro d'identité du père">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="motherId" class="form-control"
+                                        placeholder="Numéro d'identité de la mère">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="grandFatherId" class="form-control"
+                                        placeholder="Numéro d'identité du grand-père">
+                                </div>
+                                <div class="col-md-6 col-lg-6 mb-3">
+                                    <input type="text" formControlName="grandMotherId" class="form-control"
+                                        placeholder="Numéro d'identité de la grand-mère">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Notes -->
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Description</legend>
+                            <div class="row">
+                                <div class="mb-3">
+                                    <div class="col-md-8 col-lg-9">
+                                        <textarea formControlName="note" class="form-control"
+                                            placeholder="Écrivez des notes ici..." style="height: 200px"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3" dir="rtl">
+                                    <div class="col-md-8 col-lg-9">
+                                        <textarea formControlName="noteArabic" class="form-control arabic-input"
+                                            placeholder="اكتب ملاحظات باللغة العربية هنا"
+                                            style="height: 200px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <div class="text-center">
+                            <button class="btn btn-warning">{{textBtn}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div><button onclick="history.back()" class="btn btn-outline"><i class="bi bi-arrow-bar-left"></i>Retour</button>
+    </div>
+    <!-- End Profile Edit Form -->
+
+</div>
+
+
+<script src="../assets/vendor/webnetart/wna.js"></script>

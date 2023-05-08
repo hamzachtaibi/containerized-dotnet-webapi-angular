@@ -1,0 +1,39 @@
+# Ignore bin and obj folders
+**/bin/
+**/obj/
+
+# Ignore user-specific files
+*.user
+*.vscode
+
+# Ignore build output
+*.dll
+*.pdb
+*.exe
+*.msi
+*.zip
+*.tar.gz
+
+# Ignore .NET artifacts
+*.cache
+*.log
+*.tmp
+*/[Bb]in/*
+*/[Oo]bj/*
+*.[Uu]ser
+*.psess
+*.vsp
+*.vspx
+*.vssscc
+*.suo
+*.bak
+*.ncb
+*.cache
+*.sbr
+*.ilk
+*.mdf
+*.ldf
+
+# Ignore NuGet Packages
+*.nupkg
+**/packages/*
