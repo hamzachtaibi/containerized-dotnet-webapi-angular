@@ -1,4 +1,4 @@
-# Containerized ASP.NET Core Web API and Abgular
+# Containerized ASP.NET Core Web API and Angular
 
 This is a Web App project which been continerized using Docker tool.
 This project is been created using DotNet 6 for webApi and angular 15 for WebApp (FrontEnd).
@@ -21,7 +21,9 @@ The .Net Api project provides many endpoints:
      - Updating Existing records.
      - and Deleting a profile.
 
-# Getting startedon a Windows machine, you can follow these general steps:
+# Getting started
+
+on a Windows machine, you can follow these general steps.
 
 To run this project:
 
@@ -53,8 +55,8 @@ You can now access the Dockerized project by opening a web browser and navigatin
 Depending on the available ports number in your machin, you may need to provide additional configuration or environment variables (inside the docker-compose.yml File) to get it to work correctly.
 
 You can access the SqlServer through Microsoft Sql Server Management studio using this credentials:
-hostName : localhost,8001
-password : SqlServer@2019
+- hostName : localhost,8001
+- password : SqlServer@2019
 
 this credentials are defined in the docker-compose.yml file.
 
@@ -64,7 +66,7 @@ The chosen port in the docker-compose.yml file may not be available on your mach
 # Videos:
 
 Source code :
-[https://youtu.be/BYGDoWdBmlo](url)
+> [https://youtu.be/BYGDoWdBmlo](url)
 
 Building images and discovering the web application:
-[https://youtu.be/yJZdmRSgaZI](url)
+> [https://youtu.be/yJZdmRSgaZI](url)
